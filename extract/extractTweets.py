@@ -8,15 +8,14 @@ today = str(date.today())
 
 location = "%s,%s,%s" % ("37.09024", "-95.712891", "2000mi") # USA
 
-def getTweet(keyword, since = weekago, until = today, number = 300):
+def getTweet(keyword, startDate = weekago, until = today, number = 5):
   auth = tweepy.OAuthHandler(temp.getck(), temp.getcs())
   auth.set_access_token(temp.getat(), temp.getats())
 
   api = tweepy.API(auth)
 
-  cursor = tweepy.Cursor(api.search,
+  cursor = tweepy.Cursor(api.search_tweets,
                          q=keyword,
-                         since=since,
                          until=until,
                          tweet_mode='extended',
                          count=number,

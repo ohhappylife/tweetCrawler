@@ -21,6 +21,6 @@ def Ngram(df, name, columns):
 
     ngram_title = (pd.Series(nltk.ngrams(title, i)).value_counts()).reset_index()
 
-    temp.savetoBucket(ngram_title, 'ngram', ftitle)
+    temp.savetoBucket(ngram_title, 'tweetsngram', ftitle)
 
 
