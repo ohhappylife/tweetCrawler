@@ -1,8 +1,10 @@
 from typing import re
 from extract import extractTweets
 import sys
-from transform import dropColumns, removeStopwords
+from temp import savetoBucket
+from transform import dropColumns, removeStopwords, removeHashTagMention, removeEmoji, removeURL
 from datetime import date, timedelta
+from transform.removeRT import removeRT
 
 try:
     keyword = sys.argv[1]
@@ -17,6 +19,16 @@ try:
 except:
     df = extractTweets(keyword)
 
-    df = dropColumns(df)
+df = dropColumns(df)
 
-    df.create_Ngram(df, str(date.today()), 'full_text')
+cleaned = df['full_text'].apply(removeStopwords.stopwords)
+cleaned = cleaned['full_text'].apply(removeEmoji.removeemoji)
+cleaned = cleaned['full_text'].apply(removeHashTagMention.removeHashtagMention)
+cleaned = cleaned['full_text'].apply(removeRT.removeRT)
+cleaned = cleaned['full_text'].apply(removeURL.removeURL)
+
+savetoBucket(df, 'raw_tweets_)', str(date.today()) + '_' + keyword)
+savetoBucket(cleaned, 'cleaned_tweets_', str(date.today()) + '_' + keyword)
+
+cleaned.create_Ngram(df, str(date.today()), 'full_text')
+
