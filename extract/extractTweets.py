@@ -23,7 +23,7 @@ def getTweet(keyword, startDate = weekago, until = today, number = 5):
                          geocode=location,
                          include_entities=True)
 
-  json_data = [r._json for r in cursor.items()]
+  json_data = [r._json for r in cursor.items(number)]
   df = pd.json_normalize(json_data)
 
   return df
