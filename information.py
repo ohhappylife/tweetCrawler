@@ -5,7 +5,7 @@ def getcs():
   return ''
 
 def getat():
-  return '-aqscQL3lsrm0yLP68KWcPR7DYxzgWj'
+  return '-'
 
 def getats():
   return ''
