@@ -6,7 +6,7 @@
 3. Create N-Grams models for collected tweets.
 
 ## Source
-- Twitter
+- Twitter (Twitter API - Tweepy)
 
 ## How to use
 - Please install required library (refer Requirements.txt)
@@ -23,6 +23,6 @@
 - Stores login credentials into codes can increase chance of data breach.
 
 ## Requirements
-- Users need to have valid API keys of the sources.
+- Users need to request and get API key from Twitter.
 - Users need to have AWS Account, and set S3 storage and s3 bucket for storing dataset.
 - Users need to have writing privilege on CWD to store log data.
