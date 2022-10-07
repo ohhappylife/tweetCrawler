@@ -1,8 +1,7 @@
 from extract import extractTweets
 import sys
-from temp import savetoBucket
+# from temp import savetoBucket
 from transform import dropColumns, removeStopwords, removeHashTagMention, removeEmoji, removeURL
-from datetime import date
 from transform.removeRT import removeRT
 import pandas as pd
 
