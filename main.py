@@ -33,7 +33,7 @@ df['full_text'] = df['full_text'].apply(removeURL.removeURL)
 
 df.to_csv('cleaned_data.csv')
 
-savetoBucket(df, 'tweetcrawlerdata', str(date.today()) + '_' + keyword)
-savetoBucket(df, 'tweetcrawlerdata', str(date.today()) + '_' + keyword)
+# savetoBucket(df, 'tweetcrawlerdata', str(date.today()) + '_' + keyword)
+# savetoBucket(df, 'tweetcrawlerdata', str(date.today()) + '_' + keyword)
 
-df.create_Ngram(df, str(date.today()), 'full_text')
+# df.create_Ngram(df, str(date.today()), 'full_text')
