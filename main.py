@@ -1,6 +1,6 @@
 from extract import extractTweets
 import sys
-# from temp import savetoBucket
+from temp import savetoBucket
 from transform import dropColumns, removeStopwords, removeHashTagMention, removeEmoji, removeURL
 from transform.removeRT import removeRT
 import pandas as pd
@@ -33,7 +33,7 @@ df['full_text'] = df['full_text'].apply(removeURL.removeURL)
 
 df.to_csv('cleaned_data.csv')
 
-# savetoBucket(df, 'tweetcrawlerdata', str(date.today()) + '_' + keyword)
-# savetoBucket(df, 'tweetcrawlerdata', str(date.today()) + '_' + keyword)
+savetoBucket(df, 'tweetcrawlerdata', str(date.today()) + '_' + keyword)
+savetoBucket(df, 'tweetcrawlerdata', str(date.today()) + '_' + keyword)
 
-# df.create_Ngram(df, str(date.today()), 'full_text')
+df.create_Ngram(df, str(date.today()), 'full_text')
