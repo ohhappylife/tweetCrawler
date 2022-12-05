@@ -1,39 +1,41 @@
+from datetime import date, timedelta, datetime
+
 from extract import extractTweets
-import sys
-from temp import savetoBucket
 from transform import dropColumns, removeStopwords, removeHashTagMention, removeEmoji, removeURL
 from transform.removeRT import removeRT
-import pandas as pd
+from analyze import extract_keywords
+from config import keywords, since, until, number, bool_date_absolute, bool_date_relative, timediff, \
+    s3_tweets_uncleaned, s3_tweets_cleaned, bool_get_keyword, bool_store_rawdata_cwd, bool_store_cleaneddata_cwd,  bool_store_rawdata_s3, bool_store_cleaneddata_s3
+import store_to_s3
+for keyword in keywords:
 
-try:
-  keyword = sys.argv[1]
-except IndexError:
-  exit(-1)
+    if bool_date_absolute == True:
+        since = since
+        until = until
+    if bool_date_relative == True:
+        since = datetime.strptime(until, '%Y-%M-%d') - timedelta(days=timediff)
+        until = until
+    if ((bool_date_absolute == False) & (bool_date_absolute == False))== True | \
+            ((bool_date_absolute == True) & (bool_date_absolute == True)) == True:
+        exit(-1)
 
-try:
-  since = sys.argv[2]
-  to = sys.argv[3]
-  number = sys.argv[4]
-  df = extractTweets.getTweet(keyword, since, to, number)
+    df = extractTweets.getTweet(keyword, since, until, number)
+    today = date.today()
+    if bool_store_rawdata_cwd == True:
+        df.to_csv(str(today) + '_' + str(keyword) + '_crawled_data.csv')
+    if bool_store_rawdata_s3 == True:
+        store_to_s3.savetoBucket_csv(df, s3_tweets_uncleaned, str(date.today()) + '_' + keyword + '_crawled_data.csv')
 
-except IndexError:
-  df = extractTweets.getTweet(keyword)
+    df = dropColumns.getRequiredInformation(df)
+    df['full_text'] = df['full_text'].apply(removeStopwords.stopwords)
+    df['full_text'] = df['full_text'].apply(removeEmoji.removeemoji)
+    df['full_text'] = df['full_text'].apply(removeHashTagMention.removeHashtagMention)
+    df['full_text'] = df['full_text'].apply(removeRT)
+    df['full_text'] = df['full_text'].apply(removeURL.removeURL)
 
-df.to_csv('crawled_data.csv')
-
-df = dropColumns.getRequiredInformation(df)
-
-df.to_csv('raw_data.csv')
-
-df['full_text'] = df['full_text'].apply(removeStopwords.stopwords)
-df['full_text'] = df['full_text'].apply(removeEmoji.removeemoji)
-df['full_text'] = df['full_text'].apply(removeHashTagMention.removeHashtagMention)
-df['full_text'] = df['full_text'].apply(removeRT)
-df['full_text'] = df['full_text'].apply(removeURL.removeURL)
-
-df.to_csv('cleaned_data.csv')
-
-savetoBucket(df, 'tweetcrawlerdata', str(date.today()) + '_' + keyword)
-savetoBucket(df, 'tweetcrawlerdata', str(date.today()) + '_' + keyword)
-
-df.create_Ngram(df, str(date.today()), 'full_text')
+    if bool_get_keyword == True:
+        df = extract_keywords.get_keywords(df, 'full_text')
+    if bool_store_cleaneddata_cwd == True:
+        df.to_csv(str(today) + '_' + str(keyword) + '_cleaned_data.csv')
+    if bool_store_cleaneddata_s3 == True:
+        store_to_s3.savetoBucket_csv(df, s3_tweets_cleaned, str(date.today()) + '_' + keyword + '_cleaned_data.csv')
