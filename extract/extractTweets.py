@@ -2,7 +2,6 @@ import tweepy as tweepy
 import pandas as pd
 from datetime import date, timedelta
 from config import tweepy_api_key, tweepy_key_secret,tweepy_access_token_secret,tweepy_access_token
-import information
 
 weekago = str(date.today() - timedelta(days=7))
 today = str(date.today())
