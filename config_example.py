@@ -26,3 +26,4 @@ bool_store_rawdata_cwd=True
 bool_store_cleaneddata_cwd=True
 bool_store_rawdata_s3=False
 bool_store_cleaneddata_s3=False
+delimeter='|'
