@@ -1,3 +1,4 @@
+# Please refer to https://unicode.org/emoji/charts/full-emoji-list.html to find full list of emoji
 import re
 
 def removeemoji(text):

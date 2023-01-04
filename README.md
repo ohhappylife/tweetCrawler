@@ -27,3 +27,7 @@
 
 ## Requirements
 - Users need to request and get API key from Twitter.
+
+## Limitations
+- Not all emojis are deleted during the process; this will be resolved soon.
+  - The link has a full list of emojis: https://unicode.org/emoji/charts/full-emoji-list.html
